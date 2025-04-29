@@ -1,0 +1,11 @@
+- name: Instalar Docker y PostgreSQL en AlmaLinux con almacenamiento NFS desde Flatcar
+  hosts: almalinux_postgres
+  become: true
+  vars:
+    nfs_server_ip: 10.17.4.27
+    nfs_export_path: /srv/nfs/postgresql
+    local_mount_path: /mnt/nfs/postgresql
+  roles:
+    - docker_setup
+    - nfs_mount
+    - postgres_deploy

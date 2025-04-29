@@ -1,0 +1,19 @@
+- name: Asegurar que el directorio NFS tiene permisos correctos
+  file:
+    path: "{{ local_mount_path }}"
+    state: directory
+    mode: '0777'
+
+- name: Copiar plantilla docker-compose.yml
+  copy:
+    src: docker-compose.yml
+    dest: /opt/postgres-nfs/docker-compose.yml
+    mode: '0644'
+
+- name: Crear carpeta de trabajo
+  file:
+    path: /opt/postgres-nfs
+    state: directory
+
+- name: Ejecutar docker-compose
+  shell: docker compose -f /opt/postgres-nfs/docker-compose.yml up -d

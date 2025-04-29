@@ -1,0 +1,25 @@
+- name: Instalar paquetes para NFS
+  dnf:
+    name: nfs-utils
+    state: present
+
+- name: Crear punto de montaje local
+  file:
+    path: "{{ local_mount_path }}"
+    state: directory
+
+- name: Montar NFS temporalmente
+  mount:
+    src: "{{ nfs_server_ip }}:{{ nfs_export_path }}"
+    path: "{{ local_mount_path }}"
+    fstype: nfs
+    opts: defaults
+    state: mounted
+
+- name: Asegurar montaje en /etc/fstab
+  mount:
+    src: "{{ nfs_server_ip }}:{{ nfs_export_path }}"
+    path: "{{ local_mount_path }}"
+    fstype: nfs
+    opts: defaults
+    state: present
